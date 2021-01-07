@@ -4213,6 +4213,12 @@ func buildCriticalityDiagnosticsIEItem(ieCriticality aper.Enumerated, ieID int64
 }
 
 func printRanInfo(ran *context.AmfRan) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			Ngaplog.Warnf("Print RanInfo error, gNB may have been lost: %+v", err)
+		}
+	}()
 	switch ran.RanPresent {
 	case context.RanPresentGNbId:
 		Ngaplog.Tracef("IP[%s] GNbId[%s]", ran.Conn.RemoteAddr().String(), ran.RanId.GNbId.GNBValue)
